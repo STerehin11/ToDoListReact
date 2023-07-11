@@ -9,7 +9,9 @@ export default function useData(url) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await fetch(url);
+        const response = await fetch(
+          "https://jsonplaceholder.typicode.com/todos"
+        );
         const json = await response.json();
         setData(json);
       } catch (error) {

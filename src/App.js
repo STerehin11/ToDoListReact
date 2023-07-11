@@ -11,9 +11,7 @@ function App() {
   const [selectedSort, setSelectedSort] = useState("id");
   const [newTask, setNewTask] = useState("");
 
-  const { data, loading, error } = useData(
-    "https://jsonplaceholder.typicode.com/todos"
-  );
+  const { data, loading, error } = useData();
 
   const checkData = (data) => {
     data && setItem(data);
@@ -24,7 +22,7 @@ function App() {
     checkData(data);
   }, [data, error]);
 
-  const sortTodos = (sort) => {
+  const sortItems = (sort) => {
     setSelectedSort(sort);
   };
 
@@ -42,10 +40,10 @@ function App() {
             />
             <MySelect
               value={selectedSort}
-              onChange={sortTodos}
+              onChange={sortItems}
               defaultValue="Sort"
               options={[
-                { value: "id", name: "Id sort" },
+                { value: "id", name: "All" },
                 { value: "completed", name: "Completed" },
                 { value: "active", name: "Active" },
                 { value: "name", name: "Name sort" },
