@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import MyButton from "./MyButton";
 import { useMemo } from "react";
+import useData from "../Hooks/useData";
 
 const ListItem = ({ listItems, setToDo, selectedSort }) => {
   const sortedTodos = useMemo(() => {
@@ -8,13 +9,14 @@ const ListItem = ({ listItems, setToDo, selectedSort }) => {
   }, [selectedSort, listItems]);
 
   function filterTodos(todos, sortType) {
+    var newArray = [];
     if (sortType === "id") {
       return [...todos].sort((a, b) => a.id - b.id);
     } else if (selectedSort === "name") {
       return [...todos].sort((a, b) => a.title.localeCompare(b.title));
     } else if (selectedSort === "all") {
     } else if (sortType === "completed") {
-      var newArray = [];
+      newArray = [];
       for (var i = 0; i < todos.length; i++) {
         if (todos[i].completed === true) {
           newArray.push(todos[i]);
@@ -22,10 +24,10 @@ const ListItem = ({ listItems, setToDo, selectedSort }) => {
       }
       return newArray;
     } else if (sortType === "active") {
-      var newArray = [];
-      for (var i = 0; i < todos.length; i++) {
-        if (todos[i].completed === false) {
-          newArray.push(todos[i]);
+      newArray = [];
+      for (var j = 0; j < todos.length; j++) {
+        if (todos[j].completed === false) {
+          newArray.push(todos[j]);
         }
       }
       return newArray;
