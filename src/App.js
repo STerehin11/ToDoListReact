@@ -4,24 +4,25 @@ import React, { useState, useEffect } from "react";
 import AddItemForm from "./components/AddItemForm";
 import MySelect from "./components/MySelect";
 import ListItem from "./components/ListItem";
+import useData from "./Hooks/useData";
 
 function App() {
   const [listItems, setItem] = useState([]);
   const [selectedSort, setSelectedSort] = useState("id");
   const [newTask, setNewTask] = useState("");
 
+  const { data, loading, error } = useData(
+    "https://jsonplaceholder.typicode.com/todos"
+  );
+
+  const checkData = (data) => {
+    data && setItem(data);
+    error && alert(error);
+  };
+
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/todos")
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setItem(result);
-        },
-        (error) => {
-          alert(error);
-        }
-      );
-  }, []);
+    checkData(data);
+  }, [data, error]);
 
   const sortTodos = (sort) => {
     setSelectedSort(sort);
@@ -34,7 +35,7 @@ function App() {
           <div className="main-content">
             <h2>ToDo List</h2>
             <AddItemForm
-              listItems={listItems}
+              listItems={listItems && listItems}
               newItem={newTask}
               setNewItem={setNewTask}
               setItem={setItem}
@@ -50,11 +51,15 @@ function App() {
                 { value: "name", name: "Name sort" },
               ]}
             />
-            <ListItem
-              selectedSort={selectedSort}
-              listItems={listItems}
-              setToDo={setItem}
-            />
+            {loading ? (
+              <h2>Loading...</h2>
+            ) : (
+              <ListItem
+                selectedSort={selectedSort}
+                listItems={listItems && listItems}
+                setToDo={setItem}
+              />
+            )}
           </div>
         </div>
       }
