@@ -1,0 +1,34 @@
+.taskBg-light {
+  background-color: aliceblue;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  padding: 10px 140px 10px 15px;
+  text-align: left;
+  font-size: 22px;
+  position: relative;
+  border-radius: 30px;
+}
+
+.taskBg-light div {
+  display: flex;
+  align-items: center;
+}
+
+.taskBg-light .taskBg-light .taskBg-light .iconsWrap {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  width: auto;
+  display: inline-block;
+}
+
+.taskBg-light .iconsWrap span {
+  display: inline-block;
+  margin: 0px 10px 0 10px;
+  cursor: pointer;
+}
+
+.taskBg-light .iconsWrap span:hover {
+  color: #04346b;
+}
