@@ -4,10 +4,15 @@ import "../styles/dark/add-button.css";
 import "../styles/light/add-button.css";
 import { useContext, useState } from "react";
 import { ThemeContext } from "../Context/ThemeContext";
+import {
+  ItemsDispatchContext,
+  useItemsDispatch,
+} from "../Context/ItemsContext";
 
-const AddItemForm = ({ onAddItem }) => {
+const AddItemForm = () => {
   const [newItem, setNewItem] = useState(null);
   const theme = useContext(ThemeContext);
+  const dispatch = useItemsDispatch(ItemsDispatchContext);
 
   return (
     <>
@@ -20,7 +25,10 @@ const AddItemForm = ({ onAddItem }) => {
         <MyButton
           buttonClassName={"add_button-" + theme}
           handleClick={() => {
-            onAddItem(newItem);
+            dispatch({
+              type: "add",
+              title: newItem,
+            });
           }}
           name={"Add"}
         ></MyButton>
