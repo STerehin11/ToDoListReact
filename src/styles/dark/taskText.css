@@ -1,0 +1,14 @@
+.taskText-dark {
+  color: #f7f6f6;
+}
+
+.taskText-dark {
+  flex: 1;
+}
+
+.completed .taskText-dark {
+  text-decoration: line-through;
+  opacity: 0.3;
+  color: #f7f6f6;
+  flex: 1;
+}

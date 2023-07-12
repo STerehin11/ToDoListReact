@@ -1,0 +1,14 @@
+.taskText-light {
+  color: black;
+}
+
+.taskText-light {
+  flex: 1;
+}
+
+.completed .taskText-light {
+  text-decoration: line-through;
+  opacity: 0.3;
+  color: #555;
+  flex: 1;
+}

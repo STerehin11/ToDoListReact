@@ -1,0 +1,9 @@
+.button_in_item-dark {
+  border: none;
+  outline: none;
+  padding: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: rgba(28, 28, 28, 0);
+  color: white;
+}

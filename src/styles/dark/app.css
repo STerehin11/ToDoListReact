@@ -1,0 +1,11 @@
+.App-dark {
+  text-align: center;
+  background: #01122f;
+  background-size: cover;
+}
+.App-dark h2 {
+  color: rgb(193, 196, 204);
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+}
