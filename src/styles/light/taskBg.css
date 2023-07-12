@@ -14,7 +14,7 @@
   align-items: center;
 }
 
-.taskBg-light .taskBg-light .taskBg-light .iconsWrap {
+.taskBg-light .iconsWrap {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
