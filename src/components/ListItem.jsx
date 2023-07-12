@@ -1,112 +1,96 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect, useReducer } from "react";
 import MyButton from "./MyButton";
 import { useMemo } from "react";
-import useData from "../Hooks/useData";
+import { ThemeContext } from "../Context/ThemeContext";
+import "../styles/dark/taskBg.css";
+import "../styles/light/taskBg.css";
+import "../styles/dark/taskNumber.css";
+import "../styles/light/taskNumber.css";
+import "../styles/dark/taskText.css";
+import "../styles/light/taskText.css";
+import "../styles/dark/button-in-item.css";
+import "../styles/light/button-in-item.css";
 
-const ListItem = ({ listItems, setToDo, selectedSort }) => {
-  const sortedTodos = useMemo(() => {
-    return filterTodos(listItems, selectedSort);
-  }, [selectedSort, listItems]);
+const ListItem = ({
+  listItems,
+  onDeleteTask,
+  onMarkCompleted,
+  selectedSort,
+  filterValue,
+}) => {
+  const theme = useContext(ThemeContext);
 
-  function filterTodos(todos, sortType) {
-    var newArray = [];
-    if (sortType === "id") {
-      return [...todos].sort((a, b) => a.id - b.id);
-    } else if (selectedSort === "name") {
-      return [...todos].sort((a, b) => a.title.localeCompare(b.title));
-    } else if (selectedSort === "all") {
-    } else if (sortType === "completed") {
-      newArray = [];
-      for (var i = 0; i < todos.length; i++) {
-        if (todos[i].completed === true) {
-          newArray.push(todos[i]);
-        }
+  const todos = useMemo(() => {
+    return filterTodos(listItems, selectedSort, filterValue);
+  }, [selectedSort, listItems, filterValue]);
+
+  function sortTodos(todos, sortType) {
+    switch (sortType) {
+      case "id": {
+        return [...todos].sort((a, b) => a.id - b.id);
       }
-      return newArray;
-    } else if (sortType === "active") {
-      newArray = [];
-      for (var j = 0; j < todos.length; j++) {
-        if (todos[j].completed === false) {
-          newArray.push(todos[j]);
-        }
+      case "name": {
+        return [...todos].sort((a, b) => a.title.localeCompare(b.title));
       }
-      return newArray;
+      default: {
+        throw Error("Unknown sortType");
+      }
     }
   }
 
-  const deleteItem = (id) => {
-    deleteItemOnServer(id);
-    let newTasks = listItems.filter((task) => task.id !== id);
-    setToDo(newTasks);
-  };
-
-  const markCompleted = (id) => {
-    let newTasks = listItems.map((task) => {
-      if (task.id === id) {
-        var updatedTask = { ...task, completed: !task.completed };
-        updateItemOnServer(updatedTask);
-        return updatedTask;
+  function filterTodos(todos, sortType, filterType) {
+    switch (filterType) {
+      case "all": {
+        return sortTodos(todos, sortType);
       }
-      return task;
-    });
-    setToDo(newTasks);
-  };
-
-  function deleteItemOnServer(deletedItemId) {
-    fetch("https://jsonplaceholder.typicode.com/todos/" + deletedItemId, {
-      method: "DELETE",
-    })
-      .then((response) => response.json())
-      .then(
-        (result) => {
-          console.log(result);
-        },
-        (error) => {
-          alert(error);
+      case "completed": {
+        let newArray = [];
+        for (var i = 0; i < todos.length; i++) {
+          if (todos[i].completed === true) {
+            newArray.push(todos[i]);
+          }
         }
-      );
-  }
-
-  function updateItemOnServer(updateItem) {
-    fetch("https://jsonplaceholder.typicode.com/todos/1", {
-      method: "PUT",
-      body: JSON.stringify({ updateItem }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    })
-      .then((response) => response.json())
-      .then(
-        (result) => {
-          console.log(result);
-        },
-        (error) => {
-          alert(error);
+        return sortTodos(newArray, sortType);
+      }
+      case "active": {
+        let newArray = [];
+        for (var j = 0; j < todos.length; j++) {
+          if (todos[j].completed === false) {
+            newArray.push(todos[j]);
+          }
         }
-      );
+        return sortTodos(newArray, sortType);
+      }
+      default: {
+        throw Error("Unknown filterType");
+      }
+    }
   }
 
   return (
     <>
-      {sortedTodos &&
-        sortedTodos.map((task, index) => {
+      {todos &&
+        todos.map((task, index) => {
           return (
             <React.Fragment key={task.id}>
-              <div className="taskBg">
+              <div className={"taskBg-" + theme}>
                 <div className={task.completed ? "completed" : null}>
-                  <span className="taskNumber">{index + 1}</span>
-                  <span className="taskText">{task.title}</span>
+                  <span className={"taskNumber-" + theme}>{index + 1}</span>
+                  <span className={"taskText-" + theme}>{task.title}</span>
                 </div>
                 <div className="iconsWrap">
                   <MyButton
-                    buttonClassName="button_in_item"
+                    buttonClassName={"button_in_item-" + theme}
                     name={task.completed ? "uncompleted" : "completed"}
-                    handleClick={() => markCompleted(task.id)}
+                    handleClick={() => {
+                      console.log("listItem");
+                      onMarkCompleted(task);
+                    }}
                   ></MyButton>
                   <MyButton
-                    buttonClassName="button_in_item"
+                    buttonClassName={"button_in_item-" + theme}
                     name="Delete"
-                    handleClick={() => deleteItem(task.id)}
+                    handleClick={() => onDeleteTask(task.id)}
                   ></MyButton>
                 </div>
               </div>

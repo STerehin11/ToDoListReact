@@ -1,0 +1,12 @@
+.App-light {
+  text-align: center;
+  background: #002765;
+  background-size: cover;
+}
+
+.App-light h2 {
+  color: black;
+  align-items: center;
+  margin-bottom: 20px;
+  text-align: center;
+}
