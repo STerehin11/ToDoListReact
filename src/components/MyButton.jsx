@@ -1,5 +1,3 @@
-import "../styles/button.css";
-
 const MyButton = ({ handleClick, name, buttonClassName }) => {
   return (
     <>
